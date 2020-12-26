@@ -6,7 +6,7 @@
 /*   By: wonjlee  <wonjlee@stduent.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/25 02:33:10 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/25 14:37:55 by wonjin           ###   ########.fr       */
+/*   Updated: 2020/12/26 20:19:18 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ char	*ft_strdup(char *src)
 	if (!*src)
 	{
 		ans = (char *)malloc(1);
+		if (!ans)
+			return (0);
 		*ans = 0;
 		return (ans);
 	}
 	while (src[len])
 		len++;
-	ans = (char *)malloc(len * sizeof(char));
+	ans = (char *)malloc((len + 1) * sizeof(char));
 	if (!ans)
-		return (-1);
+		return (0);
 	len = 0;
 	while (*src)
 		ans[len++] = *(src++);
