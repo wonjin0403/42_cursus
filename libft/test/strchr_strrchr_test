@@ -1,0 +1,10 @@
+#include <stdio.h>
+char	*ft_strchr(const char *str, int c);
+char	*ft_strrchr(const char *str, int c);
+
+int	main(void)
+{
+	char arr[] = "133345";
+	printf("%s\n", ft_strrchr(arr, '3'));
+	//printf("%c\n", *ft_strchr(arr, '5'));
+}
