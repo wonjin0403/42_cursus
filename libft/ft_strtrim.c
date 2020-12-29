@@ -1,6 +1,8 @@
 #include <stdlib.h>
-
-int	ft_check(char c, char const *set)
+#include <stdio.h>
+#include "libft.h"
+#include <string.h>
+int	ft_check(char c, unsigned char const *set)
 {
 	while (*set)
 	{
@@ -13,27 +15,26 @@ int	ft_check(char c, char const *set)
 
 char *ft_strtrim(char const *s1, char const *set)
 {
-	size_t	len;
-	size_t	cnt;
+	size_t	start;
+	size_t	end;
 	char *	ans;
-
-	len = 0;
-	cnt = 0;
-	while (s1[cnt])
-	{
-		if (!ft_check(s1[cnt], set))
-			len++;
-		cnt++;
-	}
-	cnt = 0;
-	ans = (char *)malloc((len + 1) * sizeof(char));
-	while (*s1)
-	{
-		if (!ft_check(*s1, set))
-			ans[cnt++] = *(s1++);
-		else
-			s1++;
-	}
-	ans[cnt] = 0;
+	
+	start = 0;
+	end = ft_strlen(s1) - 1;
+	if (!s1)
+		return (0);
+	else if (!set)
+		return (ft_strdup((char *)s1));
+	while (s1[start] && ft_strchr(set, s1[start]))
+		start++;
+	while (s1[end] && end > 0 && ft_strchr(set, s1[end]))
+		end--;
+	printf("start %d\n", (int)start);
+	printf("end	 %d\n", (int)end);
+	if (end < start)
+		return (ft_strdup(""));	
+	if (!(ans = (char *)malloc(sizeof(char *) * (end - start + 1 + 1))))
+			return (0);
+	strlcpy(ans, s1 + start, end - start + 1 + 1);
 	return (ans);
 }

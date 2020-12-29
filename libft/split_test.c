@@ -5,7 +5,7 @@ int	main(void)
 {
 	char	**ans;
 	
-	ans = ft_split("", '1');
+	ans = ft_split("      ", ' ');
 	while (*ans)
 		printf("%s\n", *(ans++));
 }

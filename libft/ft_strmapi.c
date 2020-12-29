@@ -1,16 +1,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
-
-size_t	ft_strlen(char const *s)
-{
-	size_t len;
-
-	len = 0;
-	while (*(s++))
-		len++;
-	return (len);
-}
+#include "libft.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
@@ -18,14 +9,18 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	size_t	cnt;
 	char	*ans;
 	
+	if (!s || !f)
+		return (0);	
 	cnt = 0;
 	len = ft_strlen(s);
 	ans = (char *)malloc((len + 1) * sizeof(char *));
 	if (!ans)
 		return (0);
-	printf("len %d\n", (int)len);
+	ans[len] = 0;
 	while (*s)
-		ans[cnt++] = (*f)(cnt, (char)(*(s++)));
-	ans[cnt] = 0;
+	{
+		ans[cnt] = (*f)(cnt, *(s++));
+		cnt++;
+	}
 	return (ans);
 }

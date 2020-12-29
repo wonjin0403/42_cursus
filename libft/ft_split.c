@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/28 23:55:14 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/29 12:06:18 by wonjlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -8,7 +20,7 @@ size_t	ft_numarr(char const *s, char c)
 
 	cnt = 0;
 	while (*s)
-	{ 
+	{
 		if (*s != c)
 		{
 			cnt++;
@@ -37,19 +49,19 @@ size_t	ft_numw(char const *s, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**ans;
-	size_t	numarr;
 	size_t	numw;
+	size_t	numarr;
 	size_t	cnt;
 	size_t	w;
 
-	cnt = 0;
+	cnt = -1;
 	numarr = ft_numarr(s, c);
-	ans = (char **)malloc((numarr + 1) * sizeof(char *));
-	if (!ans)
+	if (!(ans = (char **)malloc((numarr + 1) * sizeof(char *))))
 		return (0);
-	ans[numarr] = 0;
-	while (cnt < numarr)
+	while (++cnt < numarr)
 	{
+		while (*s == c)
+			s++;
 		numw = ft_numw(s, c);
 		ans[cnt] = (char *)malloc((numw + 1) * sizeof(char));
 		if (!ans[cnt])
@@ -58,10 +70,7 @@ char	**ft_split(char const *s, char c)
 		while (w < numw)
 			ans[cnt][w++] = *(s++);
 		ans[cnt][w] = 0;
-		cnt++;
-		while (*s == c)
-			s++;
 	}
+	ans[cnt] = 0;
 	return (ans);
 }
-

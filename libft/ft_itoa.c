@@ -16,8 +16,6 @@ int	ft_numlen(int	n)
 	return (len);
 }
 
-
-
 char	*ft_itoa(int n)
 {
 	int	len;
