@@ -15,5 +15,5 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		node = node -> next;
 		free(now);
 	}
-	lst = 0;
+	*lst = 0;
 }

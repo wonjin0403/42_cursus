@@ -22,10 +22,8 @@ char *ft_strtrim(char const *s1, char const *set)
 	
 	start = 0;
 	end = ft_strlen(s1) - 1;
-	if (!s1)
-		return (0);
-	else if (!set)
-		return (strdup((char *)s1));
+	if (!s1 || !set)
+		return ((char *)s1);
 	while (s1[start] && ft_strchr(set, s1[start]))
 		start++;
 	while (s1[end] && end > 0 && ft_strchr(set, s1[end]))
@@ -34,6 +32,7 @@ char *ft_strtrim(char const *s1, char const *set)
 		return (strdup(""));	
 	if (!(ans = (char *)malloc(sizeof(char *) * (end - start + 1 + 1))))
 			return (0);
-	ft_strlcpy(ans, s1 + start, end - start + 1 + 1);
+	strlcpy(ans, s1 + start, end - start + 1 + 1);
+	ans[end - start + 2] = 0;
 	return (ans);
 }

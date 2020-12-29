@@ -3,17 +3,16 @@
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list *node;
-	
+
 	if (!new)
 		return ;
-	if (!lst)
-		lst = &new;
+	else if (!*lst)
+		*lst = new;
 	else
 	{
 		node = *lst;
 		while (node -> next)
 			node = node -> next;
 		node -> next = new;
-		new -> next = 0;
 	}
 }
