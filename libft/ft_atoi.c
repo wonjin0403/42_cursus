@@ -6,14 +6,16 @@
 /*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 22:37:50 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/26 17:58:18 by wonjlee          ###   ########.fr       */
+/*   Updated: 2020/12/29 13:43:51 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include <limits.h>
+#include <stdio.h>
 
 int	ft_atoi(const char *str)
 {
-	int	sign;
-	long	ans;
+	int					sign;
+	unsigned long long	ans;
 
 	sign = 1;
 	ans = 0;
@@ -28,5 +30,9 @@ int	ft_atoi(const char *str)
 	}
 	while (*str >= '0' && *str <= '9')
 		ans = 10 * ans + (int)(*(str++) - '0');
-	return ((int)(sign *ans));
+	if (sign > 0 && ans > (unsigned long long)LONG_MAX)
+		return (-1);
+	else if (sign < 0 && ans > (unsigned long long)LONG_MIN)
+		return (0);
+	return (sign *(int)ans);
 }
