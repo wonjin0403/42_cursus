@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "libft.h"
 #include <string.h>
+
 int	ft_check(char c, unsigned char const *set)
 {
 	while (*set)
@@ -33,6 +34,6 @@ char *ft_strtrim(char const *s1, char const *set)
 		return (strdup(""));	
 	if (!(ans = (char *)malloc(sizeof(char *) * (end - start + 1 + 1))))
 			return (0);
-	strlcpy(ans, s1 + start, end - start + 1 + 1);
+	ft_strlcpy(ans, s1 + start, end - start + 1 + 1);
 	return (ans);
 }
