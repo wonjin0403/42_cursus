@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/22 13:26:54 by wonjin            #+#    #+#             */
-/*   Updated: 2020/12/25 03:49:05 by wonjin           ###   ########.fr       */
+/*   Created: 2020/12/22 13:26:54 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:43:26 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	*ft_memccpy(void *dest, const void *src, int c, size_t n)
 		if (*((char *)src++) == (char)c)
 			return (dest);
 	}
-	return (NULL);
+	return (0);
 }

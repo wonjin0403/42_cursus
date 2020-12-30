@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 22:37:50 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/29 13:43:51 by wonjlee          ###   ########.fr       */
+/*   Updated: 2020/12/31 01:46:10 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include <limits.h>
 #include <stdio.h>
 
@@ -34,5 +35,5 @@ int	ft_atoi(const char *str)
 		return (-1);
 	else if (sign < 0 && ans > (unsigned long long)LONG_MIN)
 		return (0);
-	return (sign *(int)ans);
+	return (sign * (int)ans);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@.42.fr>                   +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/23 17:56:56 by wonjin            #+#    #+#             */
-/*   Updated: 2020/12/23 19:23:07 by wonjin           ###   ########.fr       */
+/*   Created: 2020/12/23 17:56:56 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:43:04 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned int	cnt;
-	char		*ans;
+	size_t	cnt;
+	char	*ans;
 
 	ans = (char *)s;
 	cnt = -1;

@@ -1,9 +1,20 @@
-#include <stdlib.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/30 16:39:29 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:45:03 by wonjlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_numlen(int	n)
+#include <stdlib.h>
+
+static int	ft_numlen(int n)
 {
-	int	len;
+	int		len;
 
 	len = 0;
 	if (n == 0)
@@ -16,10 +27,10 @@ int	ft_numlen(int	n)
 	return (len);
 }
 
-char	*ft_itoa(int n)
+char		*ft_itoa(int n)
 {
-	int	len;
-	int	cnt;
+	int		len;
+	int		cnt;
 	char	*ans;
 
 	len = ft_numlen(n);

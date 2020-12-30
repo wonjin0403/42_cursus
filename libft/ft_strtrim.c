@@ -1,9 +1,19 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include "libft.h"
-#include <string.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/30 13:30:12 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:55:19 by wonjlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_check(char c, unsigned char const *set)
+#include <stdlib.h>
+#include "libft.h"
+
+static int	ft_check(char const *set, char c)
 {
 	while (*set)
 	{
@@ -14,25 +24,24 @@ int	ft_check(char c, unsigned char const *set)
 	return (0);
 }
 
-char *ft_strtrim(char const *s1, char const *set)
+char		*ft_strtrim(char const *s, char const *set)
 {
-	size_t	start;
-	size_t	end;
-	char *	ans;
-	
+	int		start;
+	int		end;
+	char	*ans;
+
 	start = 0;
-	end = ft_strlen(s1) - 1;
-	if (!s1 || !set)
-		return ((char *)s1);
-	while (s1[start] && ft_strchr(set, s1[start]))
+	end = ft_strlen(s) - 1;
+	if (!s || !set)
+		return ((char *)s);
+	while (start <= end && ft_check(set, s[start]))
 		start++;
-	while (s1[end] && end > 0 && ft_strchr(set, s1[end]))
+	while (end >= 0 && ft_check(set, s[end]))
 		end--;
 	if (end < start)
-		return (strdup(""));	
-	if (!(ans = (char *)malloc(sizeof(char *) * (end - start + 1 + 1))))
-			return (0);
-	strlcpy(ans, s1 + start, end - start + 1 + 1);
-	ans[end - start + 2] = 0;
+		return (ft_strdup(""));
+	if (!(ans = (char *)malloc(sizeof(char) * (end - start + 1 + 1))))
+		return (0);
+	ft_strlcpy(ans, s + start, end - start + 1 + 1);
 	return (ans);
 }

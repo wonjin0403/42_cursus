@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/23 19:24:09 by wonjin            #+#    #+#             */
-/*   Updated: 2020/12/26 20:39:27 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/23 19:24:09 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:42:37 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,5 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 			((char *)dest)[n - 1 - cnt] = ((char *)src)[n - 1 - cnt];
 		cnt++;
 	}
-	/*
-	while (cnt < n)
-		copy[cnt++] = *((char *)src++);
-	cnt = -1;
-	while (++cnt < n)
-		((char *)dest)[cnt] = ((char *)copy)[cnt];
-	*/
 	return (dest);
 }

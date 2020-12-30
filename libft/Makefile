@@ -2,8 +2,8 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
-FILES = ft_memset.c\
-		ft_bzero.c \
+SRCS = ft_memset.c\
+		ft_bzero.c\
 		ft_memcpy.c\
 		ft_memccpy.c\
 		ft_memmove.c\
@@ -35,33 +35,44 @@ FILES = ft_memset.c\
 		ft_putchar_fd.c\
 		ft_putstr_fd.c\
 		ft_putendl_fd.c\
-		ft_putnbr_fd.c\
-		ft_lstnew.c\
-		ft_lstadd_front.c\
-		ft_lstsize.c\
-		ft_lstlast.c\
-		ft_lstadd_back.c\
-		ft_lstdelone.c\
-		ft_lstclear.c\
-		ft_lstiter.c\
-		ft_lstmap.c
+		ft_putnbr_fd.c
 
-OBJS = $(FILES:.c=.o)
+SRCS_BONUS = ft_lstnew.c\
+			 ft_lstadd_front.c\
+			 ft_lstsize.c\
+			 ft_lstlast.c\
+			 ft_lstadd_back.c\
+			 ft_lstdelone.c\
+			 ft_lstclear.c\
+			 ft_lstiter.c\
+			 ft_lstmap.c
 
 NAME = libft.a
 
-%.o : %.c
-	$(CC) -c $(FILES) $(CFLAGS)
-
-$(NAME) : $(OBJS)
-	ar rcs $@ $(OBJS)
-
 all : $(NAME)
 
+OBJS = $(SRCS:.c=.o)
+
+OBJS_BONUS = $(SRCS_BONUS:.c=.o)
+
+$(OBJS) : $(SRCS)
+	$(CC) -c $(SRCS) $(CFLAGS)
+
+$(OBJS_BONUS) : $(SRCS_BONUS)
+	$(CC) -c $(SRCS_BONUS) $(CFLAGS)
+
+$(NAME) : $(OBJS)
+	ar rcs $(NAME) $(OBJS)
+
+bonus : $(OBJS_BONUS)
+	ar rcs $(NAME) $(OBJS_BONUS)
+
 clean :
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS_BONUS)
 
 fclean :
 	rm -f $(NAME)
 
-.PHONY  : all clean fclean
+re : fclean all
+
+.PHONY  : all clean fclean re

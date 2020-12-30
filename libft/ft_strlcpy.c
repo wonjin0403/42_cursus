@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42seoul.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/23 23:35:11 by wonjin            #+#    #+#             */
-/*   Updated: 2020/12/30 00:40:27 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/23 23:35:11 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:51:52 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 #include "libft.h"
-#include <stdio.h>
+
 size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 {
 	size_t	len;

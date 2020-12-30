@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/12/30 13:40:23 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:50:39 by wonjlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stddef.h>
 #include "libft.h"
@@ -8,6 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*ans;
 	size_t	s1_len;
 	size_t	s2_len;
+
 	if (!s1 && !s2)
 		return (ft_strdup(""));
 	s1_len = ft_strlen(s1);

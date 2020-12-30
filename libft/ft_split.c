@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/28 23:55:14 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/29 12:06:18 by wonjlee          ###   ########.fr       */
+/*   Updated: 2020/12/31 01:49:04 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stddef.h>
-#include <stdio.h>
 
 size_t	ft_numarr(char const *s, char c)
 {
@@ -56,7 +55,7 @@ char	**ft_split(char const *s, char c)
 
 	cnt = -1;
 	numarr = ft_numarr(s, c);
-	if (!(ans = (char **)malloc((numarr + 1) * sizeof(char *))))
+	if (!s || !(ans = (char **)malloc((numarr + 1) * sizeof(char *))))
 		return (0);
 	while (++cnt < numarr)
 	{

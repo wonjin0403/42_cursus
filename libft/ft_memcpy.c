@@ -6,11 +6,11 @@
 /*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 21:06:51 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/25 22:53:37 by wonjlee          ###   ########.fr       */
+/*   Updated: 2020/12/31 01:42:48 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <stddef.h>
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
