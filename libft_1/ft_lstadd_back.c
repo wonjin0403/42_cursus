@@ -1,42 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 16:47:56 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:44:55 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	t_list *node;
 
-	ans = 0;
-	if (lst == 0)
-		return (0);
-	while (lst)
+	if (!new)
+		return ;
+	else if (!*lst)
+		*lst = new;
+	else
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		node = *lst;
+		while (node->next)
+			node = node->next;
+		node->next = new;
 	}
-	return (start);
 }

@@ -6,7 +6,7 @@
 /*   By: wonjlee </var/mail/wonjlee>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 13:09:39 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/08 13:09:43 by wonjlee          ###   ########.fr       */
+/*   Updated: 2021/01/09 16:28:37 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int		main(void)
 {
-	int	fd = open("defa.txt", O_RDWR); 
+	int	fd = open("exp.txt", O_RDWR); 
 	int num = 1;
 	char	*line;
 	

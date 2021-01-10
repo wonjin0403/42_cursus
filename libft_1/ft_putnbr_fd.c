@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:08:43 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:48:09 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+void	ft_putnbr_fd(int n, int fd)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	char	ans[11];
+	int		len;
+	int		cnt;
+	int		num;
 
-	ans = 0;
-	if (lst == 0)
-		return (0);
-	while (lst)
+	num = n;
+	len = 0;
+	while (num != 0)
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		num /= 10;
+		len++;
 	}
-	return (start);
+	if (n <= 0)
+	{
+		len += 1;
+		ans[0] = (n < 0 ? '-' : '0');
+	}
+	cnt = len - 1;
+	while (n != 0)
+	{
+		ans[cnt--] = (n % 10 < 0 ? -(n % 10) : n % 10) + '0';
+		n /= 10;
+	}
+	write(fd, ans, len);
 }

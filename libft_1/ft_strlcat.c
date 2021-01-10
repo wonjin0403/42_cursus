@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:12:37 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:51:19 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stddef.h>
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+size_t	ft_strlcat(char *dest, const char *src, size_t dstsize)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	size_t	len;
 
-	ans = 0;
-	if (lst == 0)
+	len = 0;
+	if (!dest && !src)
 		return (0);
-	while (lst)
+	while (*(dest))
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		if (len < dstsize)
+			len++;
+		dest++;
 	}
-	return (start);
+	while (len + 1 < dstsize && *src)
+	{
+		*(dest++) = *(src++);
+		len++;
+	}
+	*dest = 0;
+	while (*(src++))
+		len++;
+	return (len);
 }

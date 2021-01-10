@@ -1,42 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 13:40:23 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:50:39 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <stddef.h>
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	char	*start;
+	char	*ans;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	ans = 0;
-	if (lst == 0)
+	if (!s1 && !s2)
+		return (ft_strdup(""));
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	start = (char *)malloc((s1_len + s2_len + 1) * sizeof(char));
+	ans = start;
+	if (!start)
 		return (0);
-	while (lst)
-	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
-	}
-	return (start);
+	while (*s1)
+		*(start++) = *(s1++);
+	while (*s2)
+		*(start++) = *(s2++);
+	*start = 0;
+	return (ans);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 16:42:18 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/10 01:01:58 by wonjlee          ###   ########.fr       */
+/*   Updated: 2021/01/10 20:40:42 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdio.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int		check_buff(char **backup, char **line)
 {
@@ -63,7 +63,7 @@ int		split_buff(char *buff, size_t len, char **line, char **backup)
 
 int		get_next_line(int fd, char **line)
 {
-	static char	*backup[OPEN_MAX];
+	static char	*backup[OPEN_MAX + 1];
 	char		buff[BUFFER_SIZE + 1];
 	long		len;
 	int			check;

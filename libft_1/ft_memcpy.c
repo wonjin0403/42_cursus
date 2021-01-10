@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:50:31 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:10:05 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/21 21:06:51 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:42:48 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stddef.h>
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	t_list	*node;
-	t_list	*now;
+	size_t	cnt;
 
-	if (!lst || !del)
-		return ;
-	node = *lst;
-	while (node)
+	cnt = 0;
+	if (!(char *)dest && !(char *)src)
+		return (0);
+	while (cnt < n)
 	{
-		now = node;
-		(*del)(node->content);
-		node = node->next;
-		free(now);
+		((char *)dest)[cnt] = ((char *)src)[cnt];
+		cnt++;
 	}
-	*lst = 0;
+	return (dest);
 }

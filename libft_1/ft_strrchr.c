@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:50:31 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:10:05 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/24 00:38:41 by wonjin            #+#    #+#             */
+/*   Updated: 2020/12/25 15:28:30 by wonjin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+char	*ft_strrchr(const char *str, int c)
 {
-	t_list	*node;
-	t_list	*now;
+	char	*point;
 
-	if (!lst || !del)
-		return ;
-	node = *lst;
-	while (node)
+	point = 0;
+	while (*str)
 	{
-		now = node;
-		(*del)(node->content);
-		node = node->next;
-		free(now);
+		if (*str == (char)c)
+			point = (char *)str;
+		str++;
 	}
-	*lst = 0;
+	if (*str == (char)c)
+		point = (char *)str;
+	return (point);
 }

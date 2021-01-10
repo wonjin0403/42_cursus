@@ -1,39 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 17:11:35 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/07 11:32:35 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/24 20:51:48 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:54:25 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <stddef.h>
 
-char	*ft_strdup(char *src)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	size_t	len;
-	char	*ans;
+	size_t		cnt1;
+	size_t		cnt2;
 
-	len = 0;
-	if (!*src)
+	cnt1 = -1;
+	if (!*little)
+		return ((char *)big);
+	while (++cnt1 < len && big[cnt1])
 	{
-		ans = (char *)malloc(1);
-		if (!ans)
-			return (0);
-		*ans = 0;
-		return (ans);
+		cnt2 = 0;
+		while (big[cnt1 + cnt2] == little[cnt2] && cnt1 + cnt2 < len\
+				&& little[cnt2])
+			cnt2++;
+		if (!little[cnt2])
+			return ((char *)(&big[cnt1]));
 	}
-	while (src[len])
-		len++;
-	ans = (char *)malloc((len + 1) * sizeof(char));
-	if (!ans)
-		return (0);
-	len = 0;
-	while (*src)
-		ans[len++] = *(src++);
-	ans[len] = *src;
-	return (ans);
+	return (0);
 }

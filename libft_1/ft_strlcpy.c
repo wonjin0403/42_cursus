@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42seoul.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:50:31 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:10:05 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/23 23:35:11 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:51:52 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stddef.h>
 #include "libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 {
-	t_list	*node;
-	t_list	*now;
+	size_t	len;
 
-	if (!lst || !del)
-		return ;
-	node = *lst;
-	while (node)
+	len = 0;
+	if (!src)
+		return (0);
+	while (len + 1 < n && src[len])
 	{
-		now = node;
-		(*del)(node->content);
-		node = node->next;
-		free(now);
+		dest[len] = src[len];
+		len++;
 	}
-	*lst = 0;
+	if (n > 0)
+		dest[len] = 0;
+	return (ft_strlen(src));
 }

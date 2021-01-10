@@ -1,42 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/24 21:39:19 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:54:38 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stddef.h>
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+int		ft_strncmp(char *s1, char *s2, size_t n)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	unsigned int	cnt;
 
-	ans = 0;
-	if (lst == 0)
+	cnt = 0;
+	if (n == 0)
 		return (0);
-	while (lst)
+	while (cnt < n - 1 && *s1 && *s2 &&\
+			(unsigned char)*s1 == (unsigned char)*s2)
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		s1++;
+		s2++;
+		cnt++;
 	}
-	return (start);
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <fcntl.h>
-
-//void	ft_putchar_fd(char c, int fd);
-void	ft_putendl_fd(char *s, int fd);
+#include "libft.h"
+#include <limits.h>
 
 int	main(void)
 {
 	int	fd = open("hello.txt", O_WRONLY);
 	ft_putendl_fd("hello word", fd);
 	ft_putendl_fd("hihi", fd);
+	ft_putnbr_fd(INT_MAX, fd);
+	ft_putnbr_fd(INT_MIN, fd);
+	ft_putnbr_fd(-10, fd);
 	//ft_putchar_fd('A', fp);
 }	

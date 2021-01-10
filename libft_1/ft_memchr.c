@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 17:11:35 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/07 11:32:35 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/23 17:56:56 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:43:04 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <stddef.h>
 
-char	*ft_strdup(char *src)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	size_t	len;
+	size_t	cnt;
 	char	*ans;
 
-	len = 0;
-	if (!*src)
+	ans = (char *)s;
+	cnt = -1;
+	while (++cnt < n)
 	{
-		ans = (char *)malloc(1);
-		if (!ans)
-			return (0);
-		*ans = 0;
-		return (ans);
+		if (((char *)ans)[cnt] == (char)c)
+			return (ans + cnt);
 	}
-	while (src[len])
-		len++;
-	ans = (char *)malloc((len + 1) * sizeof(char));
-	if (!ans)
-		return (0);
-	len = 0;
-	while (*src)
-		ans[len++] = *(src++);
-	ans[len] = *src;
-	return (ans);
+	return (0);
 }

@@ -1,39 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 17:11:35 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/07 11:32:35 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:20:24 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:54:56 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 
-char	*ft_strdup(char *src)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	len;
 	char	*ans;
+	size_t	cnt;
+	size_t	len_str;
 
-	len = 0;
-	if (!*src)
+	cnt = 0;
+	len_str = 0;
+	if (!s)
+		return (ft_strdup(""));
+	if (ft_strlen(s) > start)
 	{
-		ans = (char *)malloc(1);
-		if (!ans)
-			return (0);
-		*ans = 0;
-		return (ans);
+		while (s[start + len_str] && len_str < len)
+			len_str++;
 	}
-	while (src[len])
-		len++;
-	ans = (char *)malloc((len + 1) * sizeof(char));
+	ans = (char *)malloc((len_str + 1) * sizeof(char));
 	if (!ans)
 		return (0);
-	len = 0;
-	while (*src)
-		ans[len++] = *(src++);
-	ans[len] = *src;
+	while (s[start] && cnt < len && start < ft_strlen(s))
+		ans[cnt++] = s[start++];
+	ans[cnt] = 0;
 	return (ans);
 }

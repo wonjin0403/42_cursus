@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:54:05 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 02:46:20 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/25 00:38:03 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:45:28 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+int	ft_isascii(int c)
 {
-	if (!lst || !del)
-		return ;
-	(*del)(lst->content);
-	free(lst);
+	if (c >= 0 && c <= 127)
+		return (1);
+	return (0);
 }

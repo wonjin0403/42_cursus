@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:15:12 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:53:50 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <stddef.h>
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	size_t	len;
+	size_t	cnt;
+	char	*ans;
 
-	ans = 0;
-	if (lst == 0)
+	if (!s || !f)
 		return (0);
-	while (lst)
+	cnt = 0;
+	len = ft_strlen(s);
+	ans = (char *)malloc((len + 1) * sizeof(char));
+	if (!ans)
+		return (0);
+	ans[len] = 0;
+	while (*s)
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
-			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		ans[cnt] = (*f)(cnt, *(s++));
+		cnt++;
 	}
-	return (start);
+	return (ans);
 }

@@ -1,39 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 17:11:35 by wonjlee           #+#    #+#             */
-/*   Updated: 2021/01/07 11:32:35 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:07:30 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:46:29 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <unistd.h>
 
-char	*ft_strdup(char *src)
+void	ft_putchar_fd(char c, int fd)
 {
-	size_t	len;
-	char	*ans;
-
-	len = 0;
-	if (!*src)
-	{
-		ans = (char *)malloc(1);
-		if (!ans)
-			return (0);
-		*ans = 0;
-		return (ans);
-	}
-	while (src[len])
-		len++;
-	ans = (char *)malloc((len + 1) * sizeof(char));
-	if (!ans)
-		return (0);
-	len = 0;
-	while (*src)
-		ans[len++] = *(src++);
-	ans[len] = *src;
-	return (ans);
+	write(fd, &c, 1);
 }

@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: wonjlee <wonjlee@student.42.kr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:50:31 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:10:05 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/21 21:07:10 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:42:06 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include <stddef.h>
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	*ft_memset(void *s, int c, size_t n)
 {
-	t_list	*node;
-	t_list	*now;
+	size_t	cnt;
 
-	if (!lst || !del)
-		return ;
-	node = *lst;
-	while (node)
-	{
-		now = node;
-		(*del)(node->content);
-		node = node->next;
-		free(now);
-	}
-	*lst = 0;
+	cnt = 0;
+	while (cnt < n)
+		((char *)s)[cnt++] = (char)c;
+	return (s);
 }

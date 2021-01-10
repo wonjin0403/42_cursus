@@ -1,42 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wonjlee <wonjlee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/30 16:58:17 by wonjlee           #+#    #+#             */
-/*   Updated: 2020/12/31 18:08:48 by wonjlee          ###   ########.fr       */
+/*   Created: 2020/12/30 17:11:35 by wonjlee           #+#    #+#             */
+/*   Updated: 2020/12/31 01:50:14 by wonjlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+char	*ft_strdup(char *src)
 {
-	t_list	*ans;
-	t_list	*add;
-	t_list	*start;
+	size_t	len;
+	char	*ans;
 
-	ans = 0;
-	if (lst == 0)
-		return (0);
-	while (lst)
+	len = 0;
+	if (!*src)
 	{
-		if (!(add = ft_lstnew((*f)(lst->content))))
-		{
-			((ans) ? ft_lstclear(&ans, del) : 0);
+		ans = (char *)malloc(1);
+		if (!ans)
 			return (0);
-		}
-		lst = lst->next;
-		if (ans == 0)
-		{
-			ans = add;
-			start = add;
-			continue;
-		}
-		ans->next = add;
-		ans = ans->next;
+		*ans = 0;
+		return (ans);
 	}
-	return (start);
+	while (src[len])
+		len++;
+	ans = (char *)malloc((len + 1) * sizeof(char));
+	if (!ans)
+		return (0);
+	len = 0;
+	while (*src)
+		ans[len++] = *(src++);
+	ans[len] = *src;
+	return (ans);
 }
