@@ -1,0 +1,44 @@
+FROM	debian:buster
+
+LABEL	maintainer="wonjlee@student.42seoul.kr"
+
+RUN	apt-get update && apt-get install -y\
+	vim\
+	wget\
+	nginx\
+	openssl\
+	php7.3-fpm\
+	mariadb-server\
+	php-mysql\
+	php-mbstring\
+
+COPY	./srcs/run.sh ./
+COPY	./srcs/default ./
+COPY	./srcs/wp-config.php ./
+COPY	./srcs/config.inc.php ./
+
+#openssl
+RUN	openssl req -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Lee/CN=localhost" -keyout localhost.key -out localhost.crt
+RUN	mv localhost.crt etc/ssl/certs/
+RUN	mv localhost.key etc/ssl/private/
+RUN	chmod 600 etc/ssl/certs/localhost.crt etc/ssl/private/localhost.key
+RUN	rm -rf ./etc/nginx/sites-available/default
+
+#openssl, php, autoindex
+RUN	mv ./default ./etc/nginx/sites-available/
+
+#wordpress
+RUN	wget https://wordpress.org/latest.tar.gz
+RUN	tar -xvf latest.tar.gz
+RUN	mv wordpress/ var/www/html/
+RUN	chown -R www-data:www-data /var/www/html/wordpress
+RUN	mv ./wp-config.php ./var/www/html/wordpress/
+
+#phpmyadmin
+RUN	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz
+RUN	tar -xvf phpMyAdmin-5.0.2-all-languages.tar.gz
+RUN	mv phpMyAdmin-5.0.2-all-languages phpmyadmin #make name simple
+RUN	mv phpmyadmin /var/www/html/
+RUN	mv ./config.inc.php var/www/html/phpmyadmin/
+
+CMD	bash run.sh
