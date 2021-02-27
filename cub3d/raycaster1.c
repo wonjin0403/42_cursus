@@ -47,12 +47,14 @@ int worldMap[mapWidth][mapHeight]=
 
 void	verLine(t_data *info, int x, int y1, int y2, int color)
 {
-	int	y;
-
+	int		y;
+	char	*dst;
+	
 	y = y1;
-	while (y <= y2)
+	while (y < y2)
 	{
-		mlx_pixel_put(info->mlx, info->win, x, y, color);
+		dst = info->addr + (y * info->line_length + x * (info->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;	
 		y++;
 	}
 }
@@ -91,17 +93,19 @@ int main(int argc, char *argv[])
     int side; //was a NS or a EW wall hit?
     int lineHeight;
     int done = 0;
-
+	int x;
     while(!done)
     {
         int w = sw;
         int h = sy;
         int mapX = (int)posX;
         int mapY = (int)posY;
-        int x;
         x = -1;
         while (++x < w)
         {
+			hit = 0;
+			mapX = (int)posX;
+			mapY = (int)posY;
             cameraX = 2 * x / (double)w - 1;
             rayDirX = dirX + planeX * cameraX;
             rayDirY = dirY + planeY * cameraX;
@@ -122,8 +126,7 @@ int main(int argc, char *argv[])
 
             sideDistX = (posX - mapX + ((rayDirX < 0) ? 0 : 1)) * deltaDistX;
             sideDistY = (posX - mapY + ((rayDirY < 0) ? 0 : 1)) * deltaDistY; 
-
-            while (!hit)
+			while (hit == 0)
             {
                 if (sideDistX < sideDistY)
                 {
@@ -137,20 +140,23 @@ int main(int argc, char *argv[])
                     mapY += stepY;
                     side = 1;
                 }
-                if (worldMap[mapX][mapY] > 0)
+                //printf("mapX: %d, mapY: %d\n", mapX, mapY);
+				//printf("worldMap %d\n", worldMap[mapX][mapY]);
+				if (worldMap[mapX][mapY] > 0)
                     hit = 1;
             }
-            if (planeX == 0)
+			/*if (planeX == 0)
                 perpWallDist = fabs(sideDistX - posX);
             else
             {
                 int gradient = planeY / planeX;
                 double c = posY - gradient * posX;
                 perpWallDist = fabs(gradient * (sideDistX + posX) - (sideDistY + posY) + c) / sqrt(pow(sideDistX + posX, 2) + pow(sideDistY + posY, 2));
-            }
-            //printf("perpWallDist %f\n", perpWallDist);
+            }*/
+			if (side == 0) perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+			else perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
             lineHeight = (int)(h / perpWallDist);
-
+			printf("h %d, perpWallDist %f, lineHeight: %d\n", h, perpWallDist, lineHeight);
             int drawStart = -lineHeight / 2 + h / 2;
             if (drawStart < 0)
                 drawStart = 0;
@@ -158,6 +164,7 @@ int main(int argc, char *argv[])
             if (drawEnd >= h)
                 drawEnd = h - 1;
             int color;
+			//printf("worldMap : %d\n", worldMap[mapX][mapY]);
             if (worldMap[mapX][mapY] == 1)
                 color = 0x00FF0000;
             else if (worldMap[mapX][mapY] == 2)
@@ -169,10 +176,11 @@ int main(int argc, char *argv[])
             if (side == 1)
                 color = color / 2;
             verLine(&img, x, drawStart, drawEnd, color);
-        }
+		}
         mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
         //
         //mlx_key_hook(img.win, close, &img);
+		done = 1;
     }
     mlx_loop(img.mlx);
 }

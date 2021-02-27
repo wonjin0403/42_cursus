@@ -29,6 +29,19 @@ int     loop()
     return (0);
 }
 
+void	verLine(t_vars *info, int x, int y1, int y2, int color)
+{
+	int		y;
+	char	*dst;
+	y = y1;
+	while (y <= y2)
+	{
+		dst = info->addr + (y * info->line_length + x * (info->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
+		y++;
+	}
+}
+
 int     close(int keycode, t_vars *vars)
 {
     printf("close window\n");
@@ -44,8 +57,6 @@ void            my_mlx_pixel_put(t_vars *data, int x, int y, int color)
     *(unsigned int*)dst = color;
 }
 
-
-
 int     main(void)
 {
     //void    *mlx;
@@ -57,8 +68,11 @@ int     main(void)
     img.img = mlx_new_image(img.mlx, 1920, 1080);
     img.win = mlx_new_window(img.mlx, 1920, 1080, "Hello world!");
     img.addr = mlx_get_data_addr(img.img, &(img.bits_per_pixel), &(img.line_length), &(img.endian));
-    my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
-    mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
+    //my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
+    verLine(&img, 5, 0, 500, 0x00FF0000);
+	//for (int i = 0; i < 100; i++)
+	//	mlx_pixel_put(img.mlx, img.win, 5 + i, 5, 0x00FF0000);
+	mlx_put_image_to_window(img.mlx, img.win, img.img, 500, 500);
     mlx_key_hook(img.win, close, &img);
     mlx_loop(img.mlx);
     //mlx_window = mlx_new_window(mlx, 1920, 1080, "Hello world!");
