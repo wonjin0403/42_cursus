@@ -1,6 +1,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "libft.h"
 #include "get_next_line_bonus.h"
 
@@ -192,11 +193,16 @@ static int  map_width(char *line)
 int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
 {
     int cnt;
+    int len;
 
-    cnt = 0;
+    len = ft_strlen(line);
+    cnt = 1;
+    new_map[0] = ' ';
+    new_map[len] = ' ';
+    new_map[len + 1] = 0;
     while (*line)
      {
-        new_map[cnt++] = *line : 0;
+        new_map[cnt++] = *line;
         if((*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W') &&\
             img_data->pos_x != -1)
         {
@@ -208,7 +214,7 @@ int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
                 img_data->pos_x = x;
                 img_data->pos_y = cnt;
         }
-        else if(*line != '0' && *line != '1' && *line != '2')
+        else if(*line != '0' && *line != '1' && *line != '2' && *line != ' ')
         {
                 perror("Error\nYou have wrong letter in map!");
                 return (0);
@@ -216,6 +222,24 @@ int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
         line++;
      }
      return (1);
+}
+
+char        *make_empty_str(int len)
+{
+    char    *ans;
+    int     cnt;
+
+    cnt = 0;
+    printf("s\n");
+    if (!(ans = (char *)malloc(sizeof(char) * (len + 1))))
+        return (0);
+    printf("start\n");
+    ans[len] = 0;
+    printf("start1\n");
+    while (cnt < len)
+        ans[cnt++] = ' ';
+    printf("start2\n");
+    return (ans);
 }
 
 int         take_map(char *line, t_data *img_data)
@@ -227,22 +251,44 @@ int         take_map(char *line, t_data *img_data)
 
     len = 1;
     cnt = 0;
-    while (img_data->map && (img_data->map)[len])
+    while (img_data->map && (img_data->map)[len - 1])
         len++;
-    if(!(new_map = (char **)malloc(sizeof(char *) * (len + 1))))
+    if(!(new_map = (char **)malloc(sizeof(char *) * (len + 1 + 2))))
         return (0);
-    new_map[len] = 0;
-    //line_len = map_width(line);
     line_len = ft_strlen(line);
-    if(!(new_map[len - 1] = (char *)malloc(sizeof(char) * (line_len + 1))))
+
+    if (img_data->map && len > 1)
+    {
+        printf("len %d\n", len);
+        printf("%s\n", img_data->map[1]);
+        new_map[0] = make_empty_str(ft_strlen(img_data->map[1]) + 2);
+    }
+    else
+    {
+        new_map[0] = make_empty_str(line_len + 2);
+    }    
+    
+    new_map[len + 1] = make_empty_str(line_len + 2);
+    //null gard
+    new_map[len + 2] = 0;
+    if(!(new_map[len] = (char *)malloc(sizeof(char) * (line_len + 1 + 2))))
     {
         free(new_map);
         return (0);
     }
-    if(ft_mapcpy(line, new_map[len - 1], img_data, len - 1))
+    
+    if(!ft_mapcpy(line, new_map[len], img_data, len))
         return (0);
-    while (--len > 0)
-        new_map[len - 1] = img_data->map[len - 1];
+    printf("len %d\n", len);
+    int slen = len;
+    while (--len > 1)
+        new_map[len] = img_data->map[len];
+    printf("new_map\n");
+    for(int i = 0; i < slen; i++)
+    {
+        printf("%s\n", img_data->map[i]);
+    }
+    printf("hi\n");
     free(img_data->map);
     img_data->map = new_map;
     return (1);
@@ -276,6 +322,7 @@ int         check_id(char *line, t_data *img_data)
     else
         re = take_map(ori_line, img_data);
     free(identifier);
+    printf("here in\n");
     return ((re == 0) ? 0 : 1);
 }
 
@@ -370,16 +417,21 @@ int         get_data(char *path, t_data *img_data)
     fd = open(path, O_RDWR);
     while (result == 1 && re == 1)
     {
+        printf("wonjlee %d\n", re);
         result = get_next_line(fd, &line);
+        
         if (*line)
             re = check_id(line, img_data);
+        printf("end\n");
         if (!re)
         {
             make_free(img_data);
             make_free_map(img_data);
         }
+
         free(line);
     }
+    close(fd);
     if(re && (check_int_input(img_data) == 0 || check_path_input(img_data) == 0))
     {
         make_free(img_data);
@@ -392,4 +444,17 @@ int     main(int argc, char *argv[])
 {
     t_data  img_data;
     printf("%d\n", get_data(argv[argc - 1], &img_data));
+    printf("x %d, y %d\n", img_data.x_size, img_data.y_size);
+    printf("posx:%d, posy: %d\n", img_data.pos_x, img_data.pos_y);
+    printf("f_rgb %d, c_rgb %d\n", img_data.f_rgb, img_data.c_rgb);
+    printf("no %s\n", img_data.no);
+    printf("so %s\n", img_data.so);
+    printf("we %s\n", img_data.we);
+    printf("ea %s\n", img_data.ea);
+    printf("sprite %s\n", img_data.sprite);
+    printf("map\n");        
+    for (int i = 0; i < 14; i++)
+    {
+        printf("%s\n", img_data.map[i]);
+    }
 }
