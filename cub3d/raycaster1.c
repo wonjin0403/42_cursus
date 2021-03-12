@@ -250,7 +250,6 @@ int main(int argc, char *argv[])
  
     mlx_loop_hook(img.mlx, raycaster, &img);
     mlx_key_hook(img.win, change_dir, &img);
-        
     mlx_loop(img.mlx);
 }
 
