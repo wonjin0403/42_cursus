@@ -125,7 +125,7 @@ int     main(int argc, char *argv[])
     t_data  img_data;
     printf("%d\n", get_data(argv[argc - 1], &img_data));
     printf("x %d, y %d\n", img_data.x_size, img_data.y_size);
-    printf("posx:%d, posy: %d\n", img_data.pos_x, img_data.pos_y);
+    printf("posx:%f, posy: %f\n", img_data.pos_x, img_data.pos_y);
     printf("f_rgb %d, c_rgb %d\n", img_data.f_rgb, img_data.c_rgb);
     printf("no %s\n", img_data.no);
     printf("so %s\n", img_data.so);

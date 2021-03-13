@@ -3,20 +3,26 @@
 int         check_map(t_data *img_data)
 {
     t_queue *queue;
-    char     **visited;
+    char    **visited;
+    int     cnt1;
+    int     cnt2;
     int     pos[2];
 
-    pos[0] = img_data->pos_x;
-    pos[1] = img_data->pos_y;
+    cnt1 = -1;
     visited = make_empty_map(img_data);
-    queue = NULL;
-    queue = push(queue, img_data->pos_x, img_data->pos_y);
-    if (!bfs(img_data->map, pos, visited, queue))
-    {
-        make_free_map(visited);
-        perror("Error\nYou have wrong map!\n");
-       return (0);
-    }
+    while(img_data->map[++cnt1] && (cnt2 = -1))
+        while(img_data->map[cnt1][++cnt2] && !(queue = NULL))
+            if(img_data->map[cnt1][cnt2] != '1' && img_data->map[cnt1][cnt2] != ' '\
+                && !visited[cnt1][cnt2])
+            {
+                queue = push(queue, cnt1, cnt2);
+                if(!bfs(img_data->map, pos, visited, queue))
+                {
+                    make_free_map(visited);
+                    perror("Error\nYou have wrong map!\n");
+                    return (0);
+                }
+            }
     make_free_map(visited);
     return (1);
 }
@@ -67,7 +73,7 @@ int         bfs(char **map, int *pos, char **visited, t_queue *queue)
         while(++cnt < 4)
         {
             make_new_pos(pos, &new_x, &new_y, cnt);
-            if(new_x >= 0 && new_y >= 0 && map[new_x] && new_y < ft_strlen(map[pos[0]]) &&\
+            if(new_x >= 0 && new_y >= 0 && map[new_x] && new_y < (int)ft_strlen(map[pos[0]]) &&\
                 visited[new_x][new_y] != '1' && map[new_x][new_y] != '1')
             {
                 if (map[new_x][new_y] == ' ')

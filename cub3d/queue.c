@@ -37,7 +37,10 @@ t_queue     *pop(t_queue *queue, int *x, int *y)
         before->next = NULL;
     free(now);
     if(cnt == 0)
+    {
         queue = NULL;
+        printf("make null\n");
+    }
     return (queue);
 }
 
@@ -45,15 +48,16 @@ size_t      empty(t_queue *queue)
 {
     size_t  len;
 
-    
     if(!queue)
         return (0);
     len = 1;
+    //printf("%p\n", queue->next);
     while(queue->next)
     {
         queue = queue->next;
         len++;
     }
+    //printf("222\n");
     return (len);
 }
 

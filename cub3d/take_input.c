@@ -65,6 +65,34 @@ int     two_id(char *line, char *identifier, t_data *img_data)
     return ((check) ? 1 : 0);
 }
 
+void    set_param(t_data *img_data, int x, int y, char dir)
+{
+    img_data->pos_x = (double)x;
+    img_data->pos_y = (double)y;
+    if(dir == 'N')
+    {
+        img_data->dirX = 0;
+        img_data->dirY = 1;
+    }
+    else if(dir == 'S')
+    {
+        img_data->dirX = 0;
+        img_data->dirY = -1;
+    }
+    else if(dir == 'E')
+    {
+        img_data->dirX = 1;
+        img_data->dirY = 0;
+    }
+    else if(dir == 'W')
+    {
+        img_data->dirX = -1;
+        img_data->dirY = 0;
+    }
+    img_data->planeX = -1 * img_data->dirX;
+    img_data->planeY = -1 * img_data->dirY;
+}
+
 int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
 {
     int cnt;
@@ -84,10 +112,7 @@ int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
             return (0);
         }
         else if((*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W'))
-        {
-                img_data->pos_x = x;
-                img_data->pos_y = cnt;
-        }
+            set_param(img_data, x, cnt, *line);
         else if(*line != '0' && *line != '1' && *line != '2' && *line != ' ')
         {
                 perror("Error\nYou have wrong letter in map!");
@@ -102,13 +127,9 @@ int         take_map(char *line, t_data *img_data)
 {
     int     len;
     int     line_len;
-    int     cnt;
     char    **new_map;
 
-    len = 1;
-    cnt = 0;
-    if (img_data->map == NULL)
-        len += 2;
+    len = (img_data->map == NULL) ? 3 : 1;
     while (img_data->map && (img_data->map)[len - 1])
         len++;
     if(!(new_map = (char **)malloc(sizeof(char *) * (len + 1))))
@@ -121,8 +142,7 @@ int         take_map(char *line, t_data *img_data)
     }
     if(!ft_mapcpy(line, new_map[len - 2], img_data, len - 1 - 1))
         return (0);
-    if (img_data->map == NULL)
-        new_map[0] = make_empty_str(line_len + 2);
+    (img_data->map == NULL) ? new_map[0] = make_empty_str(line_len + 2) : 0;
     new_map[len - 1] = make_empty_str(line_len + 2);
     new_map[len] = 0;
     while (img_data-> map && --len > 1)

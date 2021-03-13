@@ -21,8 +21,12 @@ typedef struct  s_data
 {
     int     x_size;
     int     y_size;
-    int     pos_x;
-    int     pos_y;
+    double  pos_x;
+    double  pos_y;
+    double  dirX;
+    double  dirY;
+    double  planeX;
+    double  planeY;
     int     f_rgb;
     int     c_rgb;
     char    *no;
