@@ -22,7 +22,9 @@ int     one_id(char *line, char *identifier, t_data *img_data)
     if(*identifier == 'R')
     {
         img_data->x_size = ft_atoi(line);
-        while (*line == ' ' || (*line >= '0' && *line <= '9'))
+        while (*line >= '0' && *line <= '9')
+            line++;
+        while(*line == ' ')
             line++;
         img_data->y_size = ft_atoi(line);
     }
@@ -89,8 +91,8 @@ void    set_param(t_data *img_data, int x, int y, char dir)
         img_data->dirX = -1;
         img_data->dirY = 0;
     }
-    img_data->planeX = -1 * img_data->dirX;
-    img_data->planeY = -1 * img_data->dirY;
+    img_data->planeX = -1 * img_data->dirY;
+    img_data->planeY = -1 * img_data->dirX;
 }
 
 int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
@@ -112,7 +114,10 @@ int    ft_mapcpy(char *line, char *new_map, t_data *img_data, int x)
             return (0);
         }
         else if((*line == 'N' || *line == 'S' || *line == 'E' || *line == 'W'))
+        {
             set_param(img_data, x, cnt, *line);
+            *line = '0';
+        }    
         else if(*line != '0' && *line != '1' && *line != '2' && *line != ' ')
         {
                 perror("Error\nYou have wrong letter in map!");

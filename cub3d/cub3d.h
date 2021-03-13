@@ -1,12 +1,15 @@
 #ifndef cub3d_h
-#define cub3d_h
+# define cub3d_h
+# define PI 3.14159265
 
-#include <fcntl.h>
-#include <errno.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <math.h>
+# include <mlx.h>
 
 #include "libft.h"
 #include "get_next_line_bonus.h"
@@ -19,6 +22,7 @@ typedef struct  s_queue{
 
 typedef struct  s_data
 {
+    int     save_bmp;
     int     x_size;
     int     y_size;
     double  pos_x;
@@ -35,6 +39,15 @@ typedef struct  s_data
     char    *ea;
     char    *sprite;
     char    **map;
+    //mlx_data
+    void    *mlx;
+    void    *win;
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     moveSpeed;
 }               t_data;
 
 t_queue         *push(t_queue *queue, int x, int y);

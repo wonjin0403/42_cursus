@@ -11,7 +11,7 @@ int     cal_rgb_num(int *rgb)
     {
         while (rgb[cnt] != 0)
         {
-            ans += 16 * (rgb[cnt] % 16);
+            ans = 16 * ans + 16 * (rgb[cnt] % 16);
             rgb[cnt] = rgb[cnt] / 16;
         }
     }

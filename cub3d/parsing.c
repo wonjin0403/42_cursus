@@ -120,7 +120,7 @@ int         get_data(char *path, t_data *img_data)
     return ((result && re) ? 1 : 0);
 }
 
-int     main(int argc, char *argv[])
+/*int     main(int argc, char *argv[])
 {
     t_data  img_data;
     printf("%d\n", get_data(argv[argc - 1], &img_data));
@@ -139,4 +139,4 @@ int     main(int argc, char *argv[])
         printf("%s\n", img_data.map[i]);
         i++;
     }
-}
+}*/

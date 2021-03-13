@@ -37,10 +37,7 @@ t_queue     *pop(t_queue *queue, int *x, int *y)
         before->next = NULL;
     free(now);
     if(cnt == 0)
-    {
         queue = NULL;
-        printf("make null\n");
-    }
     return (queue);
 }
 
