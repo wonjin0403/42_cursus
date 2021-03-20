@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int         check_map(t_data *img_data)
+int         check_map(t_input *input)
 {
     t_queue *queue;
     char    **visited;
@@ -9,17 +9,17 @@ int         check_map(t_data *img_data)
     int     pos[2];
 
     cnt1 = -1;
-    visited = make_empty_map(img_data);
-    while(img_data->map[++cnt1] && (cnt2 = -1))
-        while(img_data->map[cnt1][++cnt2] && !(queue = NULL))
-            if(img_data->map[cnt1][cnt2] != '1' && img_data->map[cnt1][cnt2] != ' '\
+    visited = make_empty_map(input);
+    while(input->map[++cnt1] && (cnt2 = -1))
+        while(input->map[cnt1][++cnt2] && !(queue = NULL))
+            if(input->map[cnt1][cnt2] != '1' && input->map[cnt1][cnt2] != ' '\
                 && !visited[cnt1][cnt2])
             {
                 queue = push(queue, cnt1, cnt2);
-                if(!bfs(img_data->map, pos, visited, queue))
+                if(!bfs(input->map, pos, visited, queue))
                 {
                     make_free_map(visited);
-                    perror("Error\nYou have wrong map!\n");
+                    printf("Error\nYou have wrong map!\n");
                     return (0);
                 }
             }
@@ -27,7 +27,7 @@ int         check_map(t_data *img_data)
     return (1);
 }
 
-char        **make_empty_map(t_data *img_data)
+char        **make_empty_map(t_input *input)
 {
     char    **visited;
     int     len;
@@ -35,14 +35,14 @@ char        **make_empty_map(t_data *img_data)
 
     cnt = -1;
     len = 0;
-    while (img_data->map && (img_data->map)[len])
+    while (input->map && (input->map)[len])
         len++;
     if(!(visited = (char **)malloc(sizeof(char *) * (len + 1))))
         return (0);
     visited[len] = 0;
     while(++cnt < len)
     {
-        if(!(visited[cnt] = ft_calloc(sizeof(char), ft_strlen(img_data->map[cnt]))))
+        if(!(visited[cnt] = ft_calloc(sizeof(char), ft_strlen(input->map[cnt]))))
         {
             make_free_map(visited);
             return (0);

@@ -28,7 +28,7 @@ int     ft_numlen(char *line)
     return (len);
 }
 
-int     take_color(char *line, char *identifier, t_data *img_data)
+int     take_color(char *line, char *identifier, t_input *input)
 {
     int cnt;
     int rgb[3];
@@ -43,9 +43,9 @@ int     take_color(char *line, char *identifier, t_data *img_data)
             line++;
     }
     if(*identifier == 'F')
-        img_data->f_rgb = cal_rgb_num(rgb);
+        input->f_rgb = cal_rgb_num(rgb);
     else if(*identifier == 'C')
-        img_data->c_rgb = cal_rgb_num(rgb);
+        input->c_rgb = cal_rgb_num(rgb);
     return (0);
 }
 
@@ -63,18 +63,18 @@ char    *make_empty_str(int len)
     return (ans);
 }
 
-void    init_struct(t_data *param)
+void    init_struct(t_input *input)
 {
-    param->x_size = -1;
-    param->y_size = -1;
-    param->pos_x = -1;
-    param->pos_y = -1;
-    param->f_rgb = -1;
-    param->c_rgb = -1;
-    param->no = NULL;
-    param->so = NULL;
-    param->we = NULL;
-    param->ea = NULL;
-    param->sprite = NULL;
-    param->map = NULL;
+    input->width = -1;
+    input->hight = -1;
+    input->pos_x = -1;
+    input->pos_y = -1;
+    input->f_rgb = -1;
+    input->c_rgb = -1;
+    input->no = NULL;
+    input->so = NULL;
+    input->we = NULL;
+    input->ea = NULL;
+    input->sprite = NULL;
+    input->map = NULL;
 }

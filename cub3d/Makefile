@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -lmlx -framework OpenGL -framework AppKit -lz
+FLAGS = -Wall -Wextra -Werror -framework OpenGL -framework AppKit -lz  #-lmlx -framework OpenGL -framework AppKit -lz
 INC = -I ./libft/ -I ./gnl/ -I ./minilibx_opengl_20191021/
 
 SRCS = raycaster1.c\
