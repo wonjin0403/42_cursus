@@ -6,11 +6,11 @@ char    *take_path(char *line)
     char    *path;
 
     len = 0;
-    while (line[len] != ' ')
+    while (line[len] && line[len] != ' ')
         len++;
     if(!(path = (char *)malloc(sizeof(char) * (len + 1))))
         return (0);
-    ft_strlcpy(path, line, len);
+    ft_strlcpy(path, line, len + 1);
     return (path);
 }
 
