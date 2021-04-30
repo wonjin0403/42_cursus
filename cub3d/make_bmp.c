@@ -1,4 +1,4 @@
-#include <cub3d.h>
+#include "cub3d.h"
 
 void    signature(char *bitmap, int *idx)
 {
@@ -34,7 +34,7 @@ void    width_and_hight_img(char *bitmap, t_data *data, int *idx)
 {
     *(int *)(bitmap + *idx) = data->input.width;
     *idx += 5;
-    *(int *)(bitmap + *idx) = data->input.height;
+    *(int *)(bitmap + *idx) = data->input.hight;
     *idx += 5;
 }
 
@@ -88,10 +88,16 @@ void    pixel_data(char *bitmap, t_data *data, int *idx)
 
     x = -1;
     y = -1;
-    while(++y < data->img_data.y)
+    printf("x: %d y :%d\n", data->img_data.x, data->img_data.y);
+    //while(++x < data->img_data)
+    int cnt;
+
+    cnt = -1;
+    printf("%d\n", data->input.width * data->input.hight * data->img_data.bits_per_pixel);
+    while(++cnt < data->input.width * data->input.hight * data->img_data.bits_per_pixel)
     {
-        while(++x < data->img_data.x)
-            bitmap[(*idx)++] = data->img_data.addr + (y * data->img_data.line_length + x * (data->img_data.bits_per_pixel / 8));
+        //printf("idx %d\n", *idx);
+        bitmap[(*idx)++] = *(data->img_data.addr + cnt);
     }
 }
 
@@ -116,7 +122,7 @@ void    bmp_make(char *bitmap, t_data *data, int *idx)
     // file size
     file_size(bitmap, data, idx);
     // reserved field (in hex. 00 00 00 00)
-    reserved_field(bitmap, idx)
+    reserved_field(bitmap, idx);
     // offset of pixel data inside the image
     offset(bitmap, idx);
     // -- BITMAP HEADER -- //
@@ -124,31 +130,38 @@ void    bmp_make(char *bitmap, t_data *data, int *idx)
     pixel_data(bitmap, data, idx);
 }
 
-void bmp_write(char *bitmap, int *idx)
+int     bmp_write(char *bitmap, int idx)
 {
     int fd;
 
     fd = open("bitmap.bmp", O_WRONLY);
-    if(fd == NULL)
+    if(fd == 0)//NULL)
     {
         printf("ERROR\nWhen \"bitmap.bmp\" open");
         return (0);
     }
-    wrtie(fd, &bitmap, idx);
+    write(fd, &bitmap, idx);
     close(fd);
-    return (0);
+    return (1);
 }
 
 int     make_bmp(t_data *data)
 {
-    char    bitmap[54 + data->input.width * data->input.hight];
+    char    *bitmap;
     int idx;
     int result;
+    
+    bitmap = (char *)malloc(54 + (data->input.width) * (data->input.hight) * data->img_data.bits_per_pixel);
 
+    bitmap[0] = 'z';
+    printf("num: %d %c\n", 54 + data->input.width * data->input.hight * data->img_data.bits_per_pixel, bitmap[0]);
     idx = 0;
     raycaster(data);
+    printf("1111\n");
     bmp_make(bitmap, data, &idx);
-    result = bmp_wirte(bitmap, idx);
+    printf("22222\n");
+    result = bmp_write(bitmap, idx);
+    free(bitmap);
     if(result == 0)
         return (0);
     return (1);

@@ -10,6 +10,7 @@ SRCS = raycaster1.c\
 		free.c\
 		bfs.c\
 		queue.c\
+		make_bmp.c\
 		gnl/get_next_line_bonus.c\
 		gnl/get_next_line_utils_bonus.c
 

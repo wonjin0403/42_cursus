@@ -263,8 +263,18 @@ int     raycaster(t_data *data)
         
         verLine(&(data->img_data), &text, param.side, x, drawStart, drawEnd, texX);
     }
-    mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
+    //mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
     return (1);
+}
+
+int decide_save_or_print(t_data *data)
+{
+    int re;
+
+    re = raycaster(data);
+    if(!(data->input.save_bmp))
+        mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
+    return (re);
 }
 
 void     init_data(t_data *data)
@@ -280,6 +290,7 @@ void     init_data(t_data *data)
     data->img_data.addr = mlx_get_data_addr(data->img_data.img,\
             &(data->img_data.bits_per_pixel), &(data->img_data.line_length), &(data->img_data.endian));
     data->input.moveSpeed = 1;
+    printf("bitperpixel %d\n", data->img_data.bits_per_pixel);
 }
 
 int check_arg(int argc, char **argv)
@@ -317,7 +328,7 @@ int main(int argc, char **argv)
         return (0);
     data.input.save_bmp = (argc == 3 &&\
             !ft_strncmp(argv[2], "--save", 6)) ? 1 : 0;
-    get_data(argv[argc - 1], &data.input);
+    get_data(argv[1], &data.input);
     printf("after %s\n", data.input.no);
     init_data(&data);
     if(!take_texture(&data.input, &data.texture))
@@ -340,14 +351,19 @@ int main(int argc, char **argv)
         printf("%s\n", data.input.map[i]);
         i++;
     }
-    mlx_loop_hook(data.input.mlx, raycaster, &data);
-    mlx_hook(data.input.win, 2, 1L<<0, change_dir, &data);
-    
-    int x = 0;
-    int y = 0;
-    //mlx_mouse_get_pos(img_data.win, &x, &y);
-    printf("x: %d, y: %d\n", x, y);
-    //mlx_key_hook(img_data.win, change_dir, &img_data);
-    mlx_loop(data.input.mlx);
+    if(data.input.save_bmp)
+        make_bmp(&data);
+    else
+    {
+        mlx_loop_hook(data.input.mlx, decide_save_or_print, &data);
+        mlx_hook(data.input.win, 2, 1L<<0, change_dir, &data);
+
+        int x = 0;
+        int y = 0;
+        //mlx_mouse_get_pos(img_data.win, &x, &y);
+        printf("x: %d, y: %d\n", x, y);
+        //mlx_key_hook(img_data.win, change_dir, &img_data);
+        mlx_loop(data.input.mlx);
+    }
     return (0);
 }

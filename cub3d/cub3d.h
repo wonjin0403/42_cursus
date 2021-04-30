@@ -39,8 +39,8 @@ typedef struct  s_mlx_data
 {
     void        *img;
     char        *addr;
-    int         x;
-    int         y;
+    int         x; //texture x
+    int         y; //texture y
     int         bits_per_pixel;
     int         line_length;
     int         endian;
@@ -123,4 +123,26 @@ int             check_int_input(t_input *input);
 int             check_path_input(t_input *input);
 int             get_data(char *path, t_input *input);
 
+//make_bmp.c
+void            signature(char *bitmap, int *idx);
+void            file_size(char *bitmap, t_data *data, int *idx);
+void            reserved_field(char *bitmap, int *idx);
+void            offset(char *bitmap, int *idx);
+void            header_size(char *bitmap, int *idx);
+void            width_and_hight_img(char *bitmap, t_data *data, int *idx);
+void            info_reserved(char *bitmap, int *idx);
+void            bpp(char *bitmap, t_data *data, int *idx);
+void            compression(char *bitmap, int *idx);
+void            image_size(char *bitmap, int *idx);
+void            ppm(char *bitmap, int *idx);
+void            color_pallette(char *bitmap, int *idx);
+void            important_color(char *bitmap, int *idx);
+void            pixel_data(char *bitmap, t_data *data, int *idx);
+void            bmp_info_header(char *bitmap, t_data *data, int *idx);
+void            bmp_make(char *bitmap, t_data *data, int *idx);
+int            bmp_write(char *bitmap, int idx);
+int             make_bmp(t_data *data);
+
+//raycaster1.c
+int     raycaster(t_data *data);
 #endif
