@@ -102,9 +102,10 @@ int         get_data(char *path, t_input *input)
     re = 1;
     result = 1;
     fd = open(path, O_RDWR);
+    line = NULL;
     while (result == 1 && re == 1)
     {
-        result = get_next_line(fd, &line);   
+        result = get_next_line(fd, &line);
         if (*line)
             re = check_id(line, input);
         if (!re)

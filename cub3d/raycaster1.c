@@ -58,6 +58,7 @@ int    make_text_info(void *mlx, char *path, t_mlx_data *info)
 {
     info->img = mlx_xpm_file_to_image(mlx, path,\
                 &(info->x), &(info->y));
+    printf("path :%s\n", path);
     if(info->img == NULL)
         return (0);
     info->addr = mlx_get_data_addr(info->img,\
@@ -70,6 +71,7 @@ int    take_texture(t_input *input, t_texture *texture)
     int result;
 
     result = 1;
+    printf("input->no %s\n", input->no);
     result *= make_text_info(input->mlx, input->no, &texture->north);
     result *= make_text_info(input->mlx, input->so, &texture->south);
     result *= make_text_info(input->mlx, input->ea, &texture->east);
@@ -316,6 +318,7 @@ int main(int argc, char **argv)
     data.input.save_bmp = (argc == 3 &&\
             !ft_strncmp(argv[2], "--save", 6)) ? 1 : 0;
     get_data(argv[argc - 1], &data.input);
+    printf("after %s\n", data.input.no);
     init_data(&data);
     if(!take_texture(&data.input, &data.texture))
     {

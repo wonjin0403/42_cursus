@@ -6,17 +6,19 @@ char    *take_path(char *line)
     char    *path;
 
     len = 0;
-    while (line[len] != ' ')
+    while (line[len] && line[len] != ' ')
         len++;
     if(!(path = (char *)malloc(sizeof(char) * (len + 1))))
         return (0);
-    ft_strlcpy(path, line, len);
+    ft_strlcpy(path, line, len + 1);
     return (path);
 }
 
 int     one_id(char *line, char *identifier, t_input *input)
 {
     int     cnt;
+    int     my_width;
+    int     my_hight;
 
     cnt = -1;
     if(*identifier == 'R')
@@ -27,6 +29,11 @@ int     one_id(char *line, char *identifier, t_input *input)
         while(*line == ' ')
             line++;
         input->hight = ft_atoi(line);
+        mlx_get_screen_size(input->mlx, &my_width, &my_hight);
+        if(input->width > my_width)
+            input->width = my_width;
+        else if(input->hight > my_hight)
+            input->hight = my_hight;
     }
     else if(*identifier == 'S')
     {
