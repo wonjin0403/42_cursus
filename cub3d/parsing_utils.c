@@ -4,18 +4,20 @@ int     cal_rgb_num(int *rgb)
 {
     int     ans;
     int     cnt;
+    int     re[3];
 
     cnt = -1;
-    ans = 0;
-    while (++cnt < 3)
+    while(++cnt < 3)
     {
-        while (rgb[cnt] != 0)
+        ans = 0;
+        while(rgb[cnt] != 0)
         {
             ans = 16 * ans + 16 * (rgb[cnt] % 16);
             rgb[cnt] = rgb[cnt] / 16;
         }
+        re[cnt] = ans;
     }
-    return (ans);
+    return (re[0] * (int)pow(16, 4) + re[1] * (int)pow(16, 2) + re[2]);
 }
 
 int     ft_numlen(char *line)
@@ -33,7 +35,7 @@ int     take_color(char *line, char *identifier, t_input *input)
     int cnt;
     int rgb[3];
 
-    cnt = 0;
+    cnt = -1;
     while(++cnt < 3)
     {
         rgb[cnt] = ft_atoi(line);
@@ -42,6 +44,7 @@ int     take_color(char *line, char *identifier, t_input *input)
         while (*line == ' ' || *line == ',' )
             line++;
     }
+    printf("RGB %d %d %d\n", rgb[0], rgb[1], rgb[2]);
     if(*identifier == 'F')
         input->f_rgb = cal_rgb_num(rgb);
     else if(*identifier == 'C')

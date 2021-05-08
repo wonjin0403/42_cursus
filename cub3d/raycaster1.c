@@ -13,10 +13,11 @@ int    change_dir(int keycode, t_data *data)
     mlx_destroy_image(data->input.mlx, data->img_data.img);
     data->img_data.img = mlx_new_image(data->input.mlx, 1920, 1080);
     data->img_data.addr = mlx_get_data_addr(data->img_data.img, &(data->img_data.bits_per_pixel), &(data->img_data.line_length), &(data->img_data.endian));
+    init_img(data);
     printf("keycode %d\n", keycode);
     if (keycode == 0 || keycode == 2)
     {
-        angle = (keycode == 0) ? -1 * 180 / PI : 1 * 180 / PI;    
+        angle = (keycode == 0) ? -1 * 180 / (PI * 300) : 1 * 180 / (PI * 300);    
         old_dirX = data->input.dirX;
         old_planeX = data->input.planeX;
         data->input.dirX = cos(angle) * data->input.dirX - sin(angle) * data->input.dirY;
@@ -28,10 +29,9 @@ int    change_dir(int keycode, t_data *data)
     else if (keycode == 13 || keycode == 1)
     {
         sign = (keycode == 13) ? 1 : -1;
-    
         new_x = data->input.pos_x + data->input.dirX * data->input.moveSpeed * sign;
         new_y = data->input.pos_y + data->input.dirY * data->input.moveSpeed * sign;
-        printf("posX %f, posY %f, moveSpeed %d, sign %d\n", data->input.pos_x, data->input.pos_y, data->input.moveSpeed, sign);
+        printf("posX %f, posY %f, moveSpeed %f, sign %d\n", data->input.pos_x, data->input.pos_y, data->input.moveSpeed, sign);
         printf("dirX %f, dirY %f\n", data->input.dirX, data->input.dirY);
         old_posX = data->input.pos_x;
         printf("newx: %f, new_y: %f, worldMap[new_x][new_y]: %c\n", new_x, new_y, data->input.map[(int)new_x][(int)new_y]);
@@ -42,7 +42,6 @@ int    change_dir(int keycode, t_data *data)
             if (data->input.map[(int)old_posX][(int)new_y] == '0')
                 data->input.pos_y = new_y;
         }
-
     }
     //space 점프 shift 달리기
     else if (keycode == 53)
@@ -127,7 +126,7 @@ void	verLine(t_mlx_data *img_data, t_mlx_data *texture, int side, int x, int y1,
 		empty_img = img_data->addr + (y * img_data->line_length + x * (img_data->bits_per_pixel / 8));
 		texture_img = texture->addr + ((int)((y - y1) * step) * texture->line_length + texX * (texture->bits_per_pixel / 8));
         if(side == 1)
-            *(unsigned int *)empty_img = (*(unsigned int *)texture_img); /// 2;
+            *(unsigned int *)empty_img = *(unsigned int *)texture_img; /// 2;
         else
             *(unsigned int *)empty_img = *(unsigned int *)texture_img;
 		y++;
@@ -221,12 +220,12 @@ double     ft_dda(t_data *data, t_ray_param *param, int *x, int *y)
             mapY += param->stepY;
             param->side = 1;
         }
+        if(data->input.map[mapX][mapY] == '2')
+            add_sprite(data, mapX, mapY)
     }
     *x = mapX;
     *y = mapY;
     param->perpWallDist = ft_cal_dist(mapX, mapY, data, param);
-
-    //printf("dist %f h %d\n", param->perpWallDist, (int)(data->input.hight / param->perpWallDist));
     return ((int)(data->input.hight / param->perpWallDist));
 }
 
@@ -240,6 +239,7 @@ int     raycaster(t_data *data)
     t_ray_param param;
 
     x = -1;
+    //init_img(data);
     while(++x < data->input.width)
     {
         int X, Y;
@@ -260,7 +260,8 @@ int     raycaster(t_data *data)
             texX = texWidth - texX - 1;
         //printf("texX %d\n", texX);
         //putcolor(img, x, drawStart, drawEnd, color);
-        
+        //putcolor(data, x, 0, data->input.hight / 2, data->input.f_rgb);
+        //putcolor(data, x, data->input.hight / 2, data->input.hight, data->input.c_rgb);
         verLine(&(data->img_data), &text, param.side, x, drawStart, drawEnd, texX);
     }
     //mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
@@ -269,12 +270,15 @@ int     raycaster(t_data *data)
 
 int decide_save_or_print(t_data *data)
 {
-    int re;
+    int re1;
+    int re2;
 
-    re = raycaster(data);
+    re1 = raycaster(data);
+    sort_sprite(data->ptr);
+    re2 = drow_sprite(data);
     if(!(data->input.save_bmp))
         mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
-    return (re);
+    return (re1 * re2);
 }
 
 void     init_data(t_data *data)
@@ -289,7 +293,7 @@ void     init_data(t_data *data)
             data->input.width, data->input.hight, "Welcome to cub3d");
     data->img_data.addr = mlx_get_data_addr(data->img_data.img,\
             &(data->img_data.bits_per_pixel), &(data->img_data.line_length), &(data->img_data.endian));
-    data->input.moveSpeed = 1;
+    data->input.moveSpeed = 1 / 2.0;
     printf("bitperpixel %d\n", data->img_data.bits_per_pixel);
 }
 
@@ -318,6 +322,20 @@ int check_arg(int argc, char **argv)
         }
     }
     return (1);
+}
+
+void init_img(t_data *data)
+{
+    int x;
+
+    x = -1;
+    while(++x < data->input.width)
+    {
+        putcolor(data, x, 0, data->input.hight / 2,\
+                        data->input.f_rgb);
+        putcolor(data, x, data->input.hight / 2,\
+                        data->input.hight, data->input.c_rgb);
+    }
 }
 
 int main(int argc, char **argv)
@@ -351,6 +369,7 @@ int main(int argc, char **argv)
         printf("%s\n", data.input.map[i]);
         i++;
     }
+    init_img(&data);
     if(data.input.save_bmp)
         make_bmp(&data);
     else

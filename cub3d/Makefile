@@ -1,5 +1,5 @@
-CC = gcc
-FLAGS = -Wall -Wextra -Werror -L. -lmlx -framework OpenGL -framework AppKit -lz  #-lmlx -framework OpenGL -framework AppKit -lz
+CC = gcc#-Wall -Wextra -Werror
+FLAGS =  -L. -lmlx -framework OpenGL -framework AppKit -lz  #-lmlx -framework OpenGL -framework AppKit -lz
 INC = -I ./libft/ -I ./gnl/ -I ./minilibx_mms_20200219 
 #./minilibx_opengl_20191021/
 

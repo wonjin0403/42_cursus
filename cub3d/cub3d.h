@@ -20,6 +20,14 @@ typedef struct  s_queue{
     int             y;
 }               t_queue;
 
+typedef struct s_sprite_data
+{
+    int     x;
+    int     y;
+    int     distance;
+    struct  s_sprite_data *next;
+}               t_sprite_data;
+
 typedef struct  s_ray_param
 {
     double          rayDirX;
@@ -76,7 +84,7 @@ typedef struct  s_input
     //
     char        *mlx;
     char        *win;
-    int         moveSpeed;
+    double      moveSpeed;
 }               t_input;
 
 typedef struct  s_data
@@ -84,6 +92,7 @@ typedef struct  s_data
     t_input     input;
     t_mlx_data  img_data;
     t_texture   texture;
+    t_sprite_data *ptr;
 }               t_data;
 
 t_queue         *push(t_queue *queue, int x, int y);
@@ -124,25 +133,26 @@ int             check_path_input(t_input *input);
 int             get_data(char *path, t_input *input);
 
 //make_bmp.c
-void            signature(char *bitmap, int *idx);
-void            file_size(char *bitmap, t_data *data, int *idx);
-void            reserved_field(char *bitmap, int *idx);
-void            offset(char *bitmap, int *idx);
-void            header_size(char *bitmap, int *idx);
-void            width_and_hight_img(char *bitmap, t_data *data, int *idx);
-void            info_reserved(char *bitmap, int *idx);
-void            bpp(char *bitmap, t_data *data, int *idx);
-void            compression(char *bitmap, int *idx);
-void            image_size(char *bitmap, int *idx);
-void            ppm(char *bitmap, int *idx);
-void            color_pallette(char *bitmap, int *idx);
-void            important_color(char *bitmap, int *idx);
-void            pixel_data(char *bitmap, t_data *data, int *idx);
-void            bmp_info_header(char *bitmap, t_data *data, int *idx);
-void            bmp_make(char *bitmap, t_data *data, int *idx);
-int            bmp_write(char *bitmap, int idx);
+void            signature(char *bitmap);
+void            file_size(char *bitmap, t_data *data);
+void            reserved_field(char *bitmap);
+void            offset(char *bitmap);
+void            header_size(char *bitmap);
+void            width_and_hight_img(char *bitmap, t_data *data);
+void            info_reserved(char *bitmap);
+void            bpp(char *bitmap, t_data *data);
+void            compression(char *bitmap);
+void            image_size(t_data *data, char *bitmap);
+void            ppm(char *bitmap);
+void            color_pallette(char *bitmap);
+void            important_color(char *bitmap);
+void            pixel_data(char *bitmap, t_data *data);
+void            bmp_info_header(char *bitmap, t_data *data);
+void            bmp_make(char *bitmap, t_data *data);
+int            bmp_write(char *bitmap);
 int             make_bmp(t_data *data);
 
 //raycaster1.c
 int     raycaster(t_data *data);
+void    init_img(t_data *data);
 #endif
