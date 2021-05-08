@@ -119,13 +119,13 @@ void	verLine(t_mlx_data *img_data, t_mlx_data *texture, int side, int x, int y1,
 	double  step;
 
 	y = y1;
-    step = (double)(texture->y) / (double)(y2 - y1);
+    step = 1.0 * (double)(texture->y) / (double)(y2 - y1);
     printf("step %f diff %d\n", step, y2 - y1);
     //printf("step %f\n", step);
 	while(y < y2)
 	{
 		empty_img = img_data->addr + (y * img_data->line_length + x * (img_data->bits_per_pixel / 8));
-		texture_img = texture->addr + ((int)((y - y1) * step) * texture->line_length + texX * (texture->bits_per_pixel / 8));
+		texture_img = texture->addr + (((int)( (y - y1) * step ) & (texture->y - 1)) * texture->line_length + texX * (texture->bits_per_pixel / 8));
         if(side == 1)
             *(unsigned int *)empty_img = *(unsigned int *)texture_img; /// 2;
         else
