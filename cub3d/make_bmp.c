@@ -39,7 +39,7 @@ void    header_size(char *bitmap)
         bitmap[idx++] = 0;
 }
 
-void    width_and_hight_img(char *bitmap, t_data *data)
+void    width_and_height_img(char *bitmap, t_data *data)
 {
     *(int *)(bitmap + 18) = 4;//data->input.width;
     *(int *)(bitmap + 22) = 1;//data->input.hight;
@@ -118,8 +118,8 @@ void    pixel_data(char *bitmap, t_data *data)
     int cnt;
 
     cnt = -1;
-    printf("%d\n", data->input.width * data->input.hight * data->img_data.bits_per_pixel / 8);
-    while(++cnt < data->input.width * data->input.hight * data->img_data.bits_per_pixel / 8)
+    printf("%d\n", data->input.width * data->input.height * data->img_data.bits_per_pixel / 8);
+    while(++cnt < data->input.width * data->input.height * data->img_data.bits_per_pixel / 8)
     {
         //printf("idx %d\n", *idx);
         bitmap[54 + cnt] = 0;//*(data->img_data.addr + cnt);
@@ -129,7 +129,7 @@ void    pixel_data(char *bitmap, t_data *data)
 void    bmp_info_header(char *bitmap, t_data *data)
 {
     header_size(bitmap);
-    width_and_hight_img(bitmap, data);
+    width_and_height_img(bitmap, data);
     info_reserved(bitmap);
     bpp(bitmap, data);
     compression(bitmap);
@@ -177,10 +177,10 @@ int     make_bmp(t_data *data)
     char    *bitmap;
     int result;
     
-    bitmap = (char *)malloc(54 + (data->input.width) * (data->input.hight) * data->img_data.bits_per_pixel);
+    bitmap = (char *)malloc(54 + (data->input.width) * (data->input.height) * data->img_data.bits_per_pixel);
     //bitmap[0] = 'z';
     //printf("num: %d %c\n", 54 + data->input.width * data->input.hight * data->img_data.bits_per_pixel, bitmap[0]);
-    raycaster(data);
+    decide_save_or_print(data);
     //printf("1111\n");
     bmp_make(bitmap, data);
     //printf("22222\n");

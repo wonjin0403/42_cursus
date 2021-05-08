@@ -1,6 +1,6 @@
 CC = gcc#-Wall -Wextra -Werror
 FLAGS =  -L. -lmlx -framework OpenGL -framework AppKit -lz  #-lmlx -framework OpenGL -framework AppKit -lz
-INC = -I ./libft/ -I ./gnl/ -I ./minilibx_mms_20200219 
+INC = -I ./libft/ -I ./gnl/ -I ./minilibx_mms_20200219
 #./minilibx_opengl_20191021/
 
 SRCS = raycaster1.c\
@@ -11,6 +11,7 @@ SRCS = raycaster1.c\
 		bfs.c\
 		queue.c\
 		make_bmp.c\
+		sprite.c\
 		gnl/get_next_line_bonus.c\
 		gnl/get_next_line_utils_bonus.c
 

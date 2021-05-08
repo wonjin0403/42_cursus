@@ -69,7 +69,7 @@ char    *make_empty_str(int len)
 void    init_struct(t_input *input)
 {
     input->width = -1;
-    input->hight = -1;
+    input->height = -1;
     input->pos_x = -1;
     input->pos_y = -1;
     input->f_rgb = -1;

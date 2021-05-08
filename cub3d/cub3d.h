@@ -20,14 +20,6 @@ typedef struct  s_queue{
     int             y;
 }               t_queue;
 
-typedef struct s_sprite_data
-{
-    int     x;
-    int     y;
-    int     distance;
-    struct  s_sprite_data *next;
-}               t_sprite_data;
-
 typedef struct  s_ray_param
 {
     double          rayDirX;
@@ -66,7 +58,7 @@ typedef struct  s_input
 {
     int         save_bmp;
     int         width; //x_size;
-    int         hight; //y_size;
+    int         height; //y_size;
     double      pos_x;
     double      pos_y;
     double      dirX;
@@ -87,6 +79,15 @@ typedef struct  s_input
     double      moveSpeed;
 }               t_input;
 
+typedef struct s_sprite_data
+{
+    double         x;
+    double         y;
+    double     distance;
+    struct  s_sprite_data *before;
+    struct  s_sprite_data *next;
+}               t_sprite_data;
+
 typedef struct  s_data
 {
     t_input     input;
@@ -94,6 +95,17 @@ typedef struct  s_data
     t_texture   texture;
     t_sprite_data *ptr;
 }               t_data;
+
+typedef struct s_draw_sprite
+{
+    int         spriteScreenX;
+    int         spriteHeight;
+    int         spriteWidth;
+    int         drawStartX;
+    int         drawStartY;
+    int         drawEndX;
+    int         drawEndY;
+}              t_draw_sprite;
 
 t_queue         *push(t_queue *queue, int x, int y);
 t_queue         *pop(t_queue *queue, int *x, int *y);
@@ -138,7 +150,7 @@ void            file_size(char *bitmap, t_data *data);
 void            reserved_field(char *bitmap);
 void            offset(char *bitmap);
 void            header_size(char *bitmap);
-void            width_and_hight_img(char *bitmap, t_data *data);
+void            width_and_height_img(char *bitmap, t_data *data);
 void            info_reserved(char *bitmap);
 void            bpp(char *bitmap, t_data *data);
 void            compression(char *bitmap);
@@ -149,10 +161,23 @@ void            important_color(char *bitmap);
 void            pixel_data(char *bitmap, t_data *data);
 void            bmp_info_header(char *bitmap, t_data *data);
 void            bmp_make(char *bitmap, t_data *data);
-int            bmp_write(char *bitmap);
+int             bmp_write(char *bitmap);
 int             make_bmp(t_data *data);
 
+//sprite.c
+t_sprite_data   *lstnew(double x, double y, double distance);
+void            lstadd_front(t_sprite_data **lst, t_sprite_data *new);
+void	        lstclear(t_sprite_data **ptr, t_sprite_data *node);
+void            add_sprite(t_data *data, int x, int y);
+t_sprite_data   *max_sprite(t_sprite_data **ptr);
+void            cal_sprite(t_data *data, t_draw_sprite *sprite_data, t_sprite_data *max);
+void            draw_sprite(t_data *data, double *dist_arr);
+int             search(t_data *data, double x, double y);
+
 //raycaster1.c
-int     raycaster(t_data *data);
+int     raycaster(t_data *data, double *dist_arr);
 void    init_img(t_data *data);
+void	verLine(t_mlx_data *img_data, t_mlx_data *texture, int side, int x, int y1, int y2, int texX);
+int     decide_save_or_print(t_data *data);
+double  distance(double x1, double y1, double x2, double y2);
 #endif

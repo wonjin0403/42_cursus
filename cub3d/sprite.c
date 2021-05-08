@@ -1,13 +1,6 @@
-typdef struct s_sprite_data
-{
-    int     x;
-    int     y;
-    int     distance;
-    struct  s_sprite_data *before;
-    struct  s_sprite_data *next;
-}               t_sprite_data;
+#include "cub3d.h"
 
-t_sprite_data	*lstnew(int x, int y, int distance)
+t_sprite_data	*lstnew(double x, double y, double distance)
 {
 	t_sprite_data	*ans;
 
@@ -30,7 +23,7 @@ void	lstadd_front(t_sprite_data **lst, t_sprite_data *new)
 		*lst = new;
 	else
 	{
-		*lst->before = new;
+		(*lst)->before = new;
         new->next = *lst;
 		*lst = new;
 	}
@@ -38,30 +31,46 @@ void	lstadd_front(t_sprite_data **lst, t_sprite_data *new)
 
 void	lstclear(t_sprite_data **ptr, t_sprite_data *node)
 {
-	t_sprite_data	*node;
 	t_sprite_data	*now;
 
 	if(!node)
 		return ;
-    if(node->before == NULL && node->next == NULL)
+    if(node->before == NULL && node->next == NULL) 
         *ptr = NULL;
-    else if(node->before == NULL)
-        *ptr = node->next;
-	else
-        node->before->next = node->next;
-    node->next->before = node->before;
+    else
+    {
+        if(node->before == NULL)
+            *ptr = node->next;
+	    else
+            node->before->next = node->next;
+        node->next->before = node->before;
+    }
     free(node);
     node = NULL;
 }
 
+int     search(t_data *data, double x, double y)
+{
+    t_sprite_data *node;
+
+    node = data->ptr;
+    while(node)
+    {
+        if(node->x == x && node->y == y)
+            return (1);
+        node = node->next;
+    }
+    return (0);
+}
+
 void    add_sprite(t_data *data, int x, int y)
 {
-    int distance;
     t_sprite_data *new;
-
-    distance = (int)pow(data->input.pos_x - x, 2) +\
-                        (int)pow(data->input.pos_y - y, 2);
-    new = lstnew(x, y, distance);
+    
+    if(search(data, x + 0.5, y + 0.5) == 1)
+        return ;
+    //printf("sprite %f %f, pos  %f, %f\n", (double)x, (double)y, data->input.pos_x, data->input.pos_y);
+    new = lstnew(x + 0.5, y + 0.5, distance(x, y, data->input.pos_x, data->input.pos_y));
     lstadd_front(&(data->ptr), new);
 }
 
@@ -72,7 +81,7 @@ t_sprite_data    *max_sprite(t_sprite_data **ptr)
     
     now = *ptr;
     max = *ptr;
-    while(!(now->next))
+    while(now->next)
     {
         if(max->distance < now->distance)
             max = now;
@@ -80,17 +89,6 @@ t_sprite_data    *max_sprite(t_sprite_data **ptr)
     }
     return (max);
 }
-
-typedef struct s_draw_sprite
-{
-    int     spriteScreenX;
-    int     spriteHeight;
-    int     spriteWidth;
-    int     drawStartX;
-    int             drawStartY;
-    int             drawEndX;
-    int             drawEndY;
-}              t_draw_sprite;
 
 void    cal_sprite(t_data *data, t_draw_sprite *sprite_data, t_sprite_data *max)
 {
@@ -102,27 +100,26 @@ void    cal_sprite(t_data *data, t_draw_sprite *sprite_data, t_sprite_data *max)
 
     invDet = 1.0 / (data->input.planeX * data->input.dirY\
                         - data->input.dirX * data->input.planeY);
-    spriteX = max->x - data->input.pos_x;
-    spriteY = max->y - data->input.pos_y;
-    transformX = invDet * (data->input.dirY * spriteX -
-                        \data->input.dirX * spriteY);
-    transformY = invDet * (-1 * data->input.planeY * spriteX +
-                        \data->input.planeX * spriteY);
+    spriteX = (double)max->x - data->input.pos_x;
+    spriteY = (double)max->y - data->input.pos_y;
+    transformX = invDet * ((data->input.dirY) * spriteX - (data->input.dirX) * spriteY);
+    transformY = invDet * (-(data->input.planeY) * spriteX + (data->input.planeX) * spriteY);
     sprite_data->spriteScreenX = (int)((data->input.width / 2) * (1 + transformX / transformY));
     sprite_data->spriteHeight = abs((int)(data->input.height / (transformY)));
     sprite_data->spriteWidth = abs((int)(data->input.height / (transformY)));
 }
 
-void    draw_sprite(t_data *data)
+void    draw_sprite(t_data *data, double *dist_arr)
 {
     t_sprite_data   *max;
-    t_mlx_data      text
+    t_mlx_data      text;
     t_draw_sprite   sprite_data;
     int             x;
-
-    max = max_sprite(&(data->ptr));
-    while(!max)
+    double          texX;
+      
+    while(data->ptr)
     {
+        max = max_sprite(&(data->ptr));
         cal_sprite(data, &sprite_data, max);
         sprite_data.drawStartY = -sprite_data.spriteHeight / 2 + data->input.height / 2;
         if(sprite_data.drawStartY < 0)
@@ -136,20 +133,17 @@ void    draw_sprite(t_data *data)
         sprite_data.drawEndX = sprite_data.spriteWidth / 2 + sprite_data.spriteScreenX;
         if(sprite_data.drawEndX >= data->input.width)
             sprite_data.drawEndX = data->input.width - 1;
-        lstclear(max);
-        x = sprite_data.drawStartX - 1;
+        lstclear(&(data->ptr), max);
+        x = sprite_data.drawStartX;
         while(++x < sprite_data.drawEndX)
         {
+            if(dist_arr[x] <= max->distance)
+                continue;
+            else
+                printf("dist %f %f\n", dist_arr[x], max->distance);
             text = data->texture.sprite;
-            verLine(&(data->img_data), text, 0, x, sprite_data.drawStartY, sprite_data.drawEndY, text.x);
+            texX = (double)text.x * ((double)(x - sprite_data.drawStartX) / (double)(sprite_data.drawEndX - sprite_data.drawStartX + 1));
+            verLine(&(data->img_data), &text, 0, data->input.width - x, sprite_data.drawStartY, sprite_data.drawEndY, texX);
         }
     }
-}
-
-sprite func
-
-int main()
-{
-    s_sprite_data ptr;
-    t_list *a = ft_lstnew();
 }

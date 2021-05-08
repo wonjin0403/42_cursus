@@ -38,7 +38,7 @@ int         check_int_input(t_input *input)
         printf("Error\nYou have no starting point!");
         return (0);
     }
-    else if(input->width == -1 || input->hight == -1)
+    else if(input->width == -1 || input->height == -1)
     {
         printf("Error\nYou don't have identifier 'R'");
         return (0);

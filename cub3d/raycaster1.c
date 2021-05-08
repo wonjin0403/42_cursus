@@ -17,7 +17,7 @@ int    change_dir(int keycode, t_data *data)
     printf("keycode %d\n", keycode);
     if (keycode == 0 || keycode == 2)
     {
-        angle = (keycode == 0) ? -1 * 180 / (PI * 300) : 1 * 180 / (PI * 300);    
+        angle = (keycode == 0) ? 1 * 180 / (PI * 300) : -1 * 180 / (PI * 300);    
         old_dirX = data->input.dirX;
         old_planeX = data->input.planeX;
         data->input.dirX = cos(angle) * data->input.dirX - sin(angle) * data->input.dirY;
@@ -37,9 +37,9 @@ int    change_dir(int keycode, t_data *data)
         printf("newx: %f, new_y: %f, worldMap[new_x][new_y]: %c\n", new_x, new_y, data->input.map[(int)new_x][(int)new_y]);
         if (new_x > 0 && data->input.map[(int)new_x] &&  new_y > 0 && new_y < ft_strlen(data->input.map[(int)new_x]))
         {
-            if (data->input.map[(int)new_x][(int)data->input.pos_y] == '0')
+            if (data->input.map[(int)new_x][(int)data->input.pos_y] != '1')
                 data->input.pos_x = new_x;
-            if (data->input.map[(int)old_posX][(int)new_y] == '0')
+            if (data->input.map[(int)old_posX][(int)new_y] != '1')
                 data->input.pos_y = new_y;
         }
     }
@@ -120,6 +120,7 @@ void	verLine(t_mlx_data *img_data, t_mlx_data *texture, int side, int x, int y1,
 
 	y = y1;
     step = (double)(texture->y) / (double)(y2 - y1);
+    printf("step %f diff %d\n", step, y2 - y1);
     //printf("step %f\n", step);
 	while(y < y2)
 	{
@@ -189,7 +190,7 @@ void    ft_start_end(t_data *data, int lineHeight, int *drawStart, int *drawEnd)
 {
     int h;
 
-    h = data->input.hight;
+    h = data->input.height;
     //점프할 경우 여기서 조정
     *drawStart = -lineHeight / 2 + h / 2;
     if (*drawStart < 0)
@@ -221,15 +222,20 @@ double     ft_dda(t_data *data, t_ray_param *param, int *x, int *y)
             param->side = 1;
         }
         if(data->input.map[mapX][mapY] == '2')
-            add_sprite(data, mapX, mapY)
+            add_sprite(data, mapX, mapY);
     }
     *x = mapX;
     *y = mapY;
     param->perpWallDist = ft_cal_dist(mapX, mapY, data, param);
-    return ((int)(data->input.hight / param->perpWallDist));
+    return ((int)(data->input.height / param->perpWallDist));
 }
 
-int     raycaster(t_data *data)
+double distance(double x1, double y1, double x2, double y2)
+{
+    return (pow((x1 - x2), 2) + pow((y1 - y2), 2));
+}
+
+int     raycaster(t_data *data, double *dist_arr)
 {
 	int         x;
     int         texX;
@@ -262,7 +268,8 @@ int     raycaster(t_data *data)
         //putcolor(img, x, drawStart, drawEnd, color);
         //putcolor(data, x, 0, data->input.hight / 2, data->input.f_rgb);
         //putcolor(data, x, data->input.hight / 2, data->input.hight, data->input.c_rgb);
-        verLine(&(data->img_data), &text, param.side, x, drawStart, drawEnd, texX);
+        verLine(&(data->img_data), &text, param.side, data->input.width - x, drawStart, drawEnd, texX);
+        dist_arr[x] = distance(data->input.pos_x, data->input.pos_y, (double)X, (double)Y);
     }
     //mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
     return (1);
@@ -270,27 +277,26 @@ int     raycaster(t_data *data)
 
 int decide_save_or_print(t_data *data)
 {
-    int re1;
-    int re2;
+    int re;
+    double dist_arr[data->input.width];
 
-    re1 = raycaster(data);
-    sort_sprite(data->ptr);
-    re2 = drow_sprite(data);
+    re = raycaster(data, dist_arr);
+    draw_sprite(data, dist_arr);
     if(!(data->input.save_bmp))
         mlx_put_image_to_window(data->input.mlx, data->input.win, data->img_data.img, 0, 0);
-    return (re1 * re2);
+    return (re);
 }
 
 void     init_data(t_data *data)
 {
     data->input.mlx = mlx_init();
     data->img_data.img = mlx_new_image(data->input.mlx,\
-            data->input.width, data->input.hight);
+            data->input.width, data->input.height);
     if(data->input.save_bmp)
         data->input.win = NULL;
     else
         data->input.win = mlx_new_window(data->input.mlx,\
-            data->input.width, data->input.hight, "Welcome to cub3d");
+            data->input.width, data->input.height, "Welcome to cub3d");
     data->img_data.addr = mlx_get_data_addr(data->img_data.img,\
             &(data->img_data.bits_per_pixel), &(data->img_data.line_length), &(data->img_data.endian));
     data->input.moveSpeed = 1 / 2.0;
@@ -331,10 +337,10 @@ void init_img(t_data *data)
     x = -1;
     while(++x < data->input.width)
     {
-        putcolor(data, x, 0, data->input.hight / 2,\
+        putcolor(data, x, 0, data->input.height / 2,\
                         data->input.f_rgb);
-        putcolor(data, x, data->input.hight / 2,\
-                        data->input.hight, data->input.c_rgb);
+        putcolor(data, x, data->input.height / 2,\
+                        data->input.height, data->input.c_rgb);
     }
 }
 
@@ -354,7 +360,7 @@ int main(int argc, char **argv)
         printf("ERROR\nYou have wrong texture path\n");
         return (0);
     }
-    printf("w %d, h %d\n", data.input.width, data.input.hight);
+    printf("w %d, h %d\n", data.input.width, data.input.height);
     printf("posx:%f, posy: %f\n", data.input.pos_x, data.input.pos_y);
     printf("f_rgb %d, c_rgb %d\n", data.input.f_rgb, data.input.c_rgb);
     printf("no %s\n", data.input.no);

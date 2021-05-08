@@ -18,7 +18,7 @@ int     one_id(char *line, char *identifier, t_input *input)
 {
     int     cnt;
     int     my_width;
-    int     my_hight;
+    int     my_height;
 
     cnt = -1;
     if(*identifier == 'R')
@@ -28,12 +28,12 @@ int     one_id(char *line, char *identifier, t_input *input)
             line++;
         while(*line == ' ')
             line++;
-        input->hight = ft_atoi(line);
-        mlx_get_screen_size(input->mlx, &my_width, &my_hight);
+        input->height = ft_atoi(line);
+        mlx_get_screen_size(input->mlx, &my_width, &my_height);
         if(input->width > my_width)
             input->width = my_width;
-        else if(input->hight > my_hight)
-            input->hight = my_hight;
+        else if(input->height > my_height)
+            input->height = my_height;
     }
     else if(*identifier == 'S')
     {
